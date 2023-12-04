@@ -1,7 +1,5 @@
 # Mobile-and-Web-Application-Development
 
-## หน้า Home กำลังทำครับ
-
 **643020472-7 ชิษณุพงศ์ พิณทอง CS:**
 
   - **My Work**
