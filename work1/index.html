@@ -93,7 +93,7 @@
             var s = $(this).attr("srcx");
             if (open_count == 1) open_card1 = s;
             if (open_count == 2) open_card2 = s;
-            $(this).hide().attr("src", s).slideDown(700);
+            $(this).hide().attr("src", s).slideDown(500);
             $(this).attr("state", 1);
             if (open_count == 2) {
                 setTimeout(() => {
