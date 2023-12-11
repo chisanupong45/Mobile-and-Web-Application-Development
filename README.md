@@ -1,7 +1,7 @@
 # Mobile-and-Web-Application-Development
 
 **643020472-7 ชิษณุพงศ์ พิณทอง CS:**
-  > ![Chisanupong] <img src="img/chisanupong.jpg" alt="Chisanupong" width="200"/>
+  > <img src="img/chisanupong.jpg" alt="Chisanupong" width="200"/>
   
   - **My Work**
     - [Work1: Jquery+Bootstrap Matching Game](https://chisanupong45.github.io/Mobile-and-Web-Application-Development/work1/)
