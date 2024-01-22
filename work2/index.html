@@ -1,0 +1,39 @@
+<html>
+
+<head>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+</head>
+
+<body>
+    <a-scene>
+        <a-assets>
+            <img id="bg" src="./img/bg2.jpg">
+            <img id="dog" src="./img/dog.png">
+            <a-asset-item id="cat" src="./img/toon_cat_free/scene.gltf"></a-asset-item>
+        </a-assets>
+
+        <a-text value="Work 2" position="0 -5 -2.2"
+            animation="property: position; to: 0 1.5 -2.2; dur: 2000; easing: linear; loop: false"></a-text>
+        <a-text value="Mobile Web Application Development" position="-5 1 -2"
+            animation="property: position; to: -1 1 -2.2; dur: 8000; easing: linear; loop: false"></a-text>
+        <a-text value="643020472-7 Chisanupong Pinthong" position="-5 -5 -2"
+            animation="property: position; to: -1 0.5 -2.2; dur: 8000; easing: linear; loop: false"></a-text>
+
+        <a-sky src="#bg" radius="50"></a-sky>
+        <a-camera>
+            <a-cursor></a-cursor>
+        </a-camera>
+
+        <a-box position="0 0 0" width="1" height="1"
+            animation="property: position; to: 0 1 -5; dur: 2000; easing: linear"
+            animation__2="property: rotation;; to: 0 360 0; dur: 5000; loop: true;" src="#dog">
+        </a-box>
+
+        <a-entity scale="0.02 0.02 0.02" position="15 0 -30" gltf-model="#cat" animation-mixer>
+        </a-entity>
+
+    </a-scene>
+</body>
+
+</html>
