@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work 5</title>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Kanit:wght@100;200;300;400;500;600;700;800;900&display=swap">
+
+    <style>
+        * {
+            font-family: 'Kanit', sans-serif;
+        }
+
+        body {
+            background-color: #fff;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 80%;
+            margin: 0 auto;
+        }
+
+        .eximg {
+            display: inline;
+        }
+
+        .column-left,
+        .column-right {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+        }
+
+        p {
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        img {
+            border-radius: 10px;
+            margin: 10px;
+        }
+
+        video {
+            border: 1px solid #ccc;
+            width: 400px;
+            height: auto;
+            margin: 10px;
+        }
+
+        hr {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Work 5: React Native App</h1>
+        <div class="container-2">
+            <p>ภาพตัวอย่างหน้าจอ</p>
+            <div class="column-left">
+                <img src="./img/myapp_1.jpg" width="400" height="auto">
+                <img src="./img/myapp_2.jpg" width="400" height="auto">
+            </div>
+            <p>วิดีโอตัวอย่าง</p>
+            <div class="column-right">
+                <video width="300" height="auto" autoplay loop>
+                    <source src="./vdo/expogo_vdo.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+
+    </div>
+    <hr>
+    <h1>Source Code</h1>
+    <div data-snack-id="@chisanupongkku/work5" data-snack-platform="mydevice" data-snack-preview="true"
+        data-snack-theme="light"
+        style="overflow:hidden;background:#fbfcfd;border:1px solid var(--color-border);border-radius:4px;height:505px;width:100%">
+    </div>
+    <script async src="https://snack.expo.dev/embed.js"></script>
+    <script>
+        document.querySelector('video').defaultPlaybackRate = 3.0;
+        document.querySelector('video').play();
+    </script>
+</body>
+
+</html>
