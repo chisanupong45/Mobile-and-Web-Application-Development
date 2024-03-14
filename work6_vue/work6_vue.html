@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Work6</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@3.4.10/dist/vuetify.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@3.4.10/dist/vuetify.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="app">
+        <v-app>
+            <v-container>
+                <v-card>
+                    <v-card-title class="bg-blue-grey">{{title}}</v-card-title>
+                    <v-card-text class="pa-6">
+                        <!-- <pre>{{students}}</pre> -->
+                        <table width="100%">
+                            <thead>
+                                <tr>
+                                    <td>รหัส</td>
+                                    <td>คำนำหน้า</td>
+                                    <td>ชื่อ</td>
+                                    <td>สกุล</td>
+                                    <td>Email</td>
+                                    <td>โทรศัพท์</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(s) in students">
+                                    <td>{{s.id}}</td>
+                                    <td>{{s.title}}</td>
+                                    <td>{{s.fname}}</td>
+                                    <td>{{s.lname}}</td>
+                                    <td>{{s.email}}</td>
+                                    <td>{{s.phone}}</td>
+                                    <td>
+                                        <v-btn @click="edit(s)"><v-icon icon="mdi-account-edit"></v-icon></v-btn>
+                                        <v-btn @click="deleteData(s)"><v-icon
+                                                icon="mdi-account-remove"></v-icon></v-btn>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-btn @click="readData()">Read Data (get)</v-btn>
+                        <v-btn @click="autoRead()">Auto Read (onSnapshot)</v-btn>
+                    </v-card-actions>
+                </v-card>
+                <v-card v-if="editmode">
+                    <v-card-text class="pa-6">
+                        <v-card-title class="bg-blue-grey">{{editmode}}</v-card-title>
+                        <v-text-field v-model="editstd.id" label="รหัส"></v-text-field>
+                        <v-combobox v-model="editstd.title" label="คำนำหน้า"
+                            :items="['นาย','นางสาว','ด.ช.','ด.ญ','นาง']"></v-combobox>
+                        <v-text-field v-model="editstd.fname" label="ชื่อ"></v-text-field>
+                        <v-text-field v-model="editstd.lname" label="นามสกุล"></v-text-field>
+                        <v-text-field v-model="editstd.email" label="E-mail"></v-text-field>
+                        <v-text-field v-model="editstd.phone" label="โทรศัพท์"></v-text-field>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-btn @click="savedata()">Save</v-btn>
+                        <v-btn @click="editmode=0">Cancel</v-btn>
+                   </v-card-actions>
+                </v-card>
+                <div class="pa-6 text-center">{{footer}}</div>
+            </v-container>
+        </v-app>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBnuh9o2Ust9c6OtfAaKf8k3Dixdayv5XA",
+            authDomain: "web2566-lab6.firebaseapp.com",
+            projectId: "web2566-lab6",
+            storageBucket: "web2566-lab6.appspot.com",
+            messagingSenderId: "573823182738",
+            appId: "1:573823182738:web:c2e1f74b677ed7f9e6034b",
+            measurementId: "G-8HVSGGYDG0",
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        const vuetify = Vuetify.createVuetify();
+        const app = Vue.createApp({
+            data() {
+                return {
+                    title: "Work 6:  เรียกใช้ฐานข้อมูล Firebase ด้วย VueJS",
+                    footer: "643020472-7 ชิษณุพงศ์ พิณทอง CS",
+                    students: [],
+                    editstd: {},
+                    editmode: 0,
+                    user: null,
+                    ustudent: null,
+                };
+            },
+            methods: {
+                readData() {
+                    db.collection("students")
+                        .get()
+                        .then((querySnapshot) => {
+                            var stdlist = [];
+                            querySnapshot.forEach((doc) => {
+                                stdlist.push({ id: doc.id, ...doc.data() });
+                            });
+                            this.students = stdlist;
+                        });
+                },
+                autoRead() {
+                    db.collection("students").onSnapshot((querySnapshot) => {
+                        var stdlist = [];
+                        querySnapshot.forEach((doc) => {
+                            stdlist.push({ id: doc.id, ...doc.data() });
+                        });
+                        this.students = stdlist;
+                    });
+                },
+                savedata() {
+                    db.collection("students").doc(this.editstd.id).set(this.editstd);
+                },
+                edit(std) {
+                    this.editstd = std;
+                    this.editmode = "edit";
+                },
+                deleteData(std) {
+                    if (confirm("ต้องการลบข้อมูล")) {
+                        db.collection("students").doc(std.id).delete();
+                    }
+                },
+                addData() {
+                    this.editmode = "เพิ่มนักเรียน";
+                    this.editstd = {};
+                },
+            },
+        });
+        app.use(vuetify).mount("#app");
+    </script>
+</body>
+
+</html>
