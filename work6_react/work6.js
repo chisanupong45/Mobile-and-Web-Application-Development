@@ -172,6 +172,7 @@ class App extends React.Component {
       .then(() => {
         this.setState({ user: null });
         localStorage.removeItem("user");
+        this.setState({ foundStudent: null });
       })
       .catch((error) => {
         console.error(error);
