@@ -97,6 +97,8 @@ class App extends React.Component {
     stdlname: "",
     stdemail: "",
     stdphone: "",
+    user: null,
+    foundStudent: null,
   };
 
   readData() {
@@ -149,11 +151,109 @@ class App extends React.Component {
     }
   }
 
+  login() {
+    var provider = new firebase.auth.GoogleAuthProvider();
+    firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then((result) => {
+        this.setState({ user: result.user });
+        // Store user in local storage
+        localStorage.setItem("user", JSON.stringify(result.user));
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  logout() {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        this.setState({ user: null });
+        // Remove user from local storage
+        localStorage.removeItem("user");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  componentDidMount() {
+    this.checkUser();
+  }
+
+  // Call this function in the constructor or componentDidMount to check if user is already logged in
+  checkUser() {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      this.setState({ user });
+    }
+  }
+  
+  searchByEmail(email) {
+    const db = firebase.firestore();
+    db.collection("students").where("email", "==", email)
+      .get()
+      .then((querySnapshot) => {
+        if (!querySnapshot.empty) {
+          const doc = querySnapshot.docs[0];
+          const student = querySnapshot.docs[0].data();
+          console.log(`Found student: ${doc.id}, ${student.title}, ${student.fname}, ${student.lname}, ${student.email}, ${student.phone}`);
+          this.setState({ foundStudent: {id: doc.id, ...student} });
+        } else {
+          console.log('No student found with that email');
+          this.setState({ foundStudent: null });
+        }
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error);
+      });
+  }
+  
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.user && this.state.user !== prevState.user) {
+      this.searchByEmail(this.state.user.email);
+    }
+  }
+
   render() {
     // var stext = JSON.stringify(this.state.students);
     return (
       <Card>
         <Card.Header>{this.title}</Card.Header>
+        <Card.Body>
+          {this.state.user ? (
+            <div>
+              <p>Welcome, {this.state.user.displayName}</p>
+              <p>Email: {this.state.user.email}</p>
+              <Button variant="danger" onClick={() => this.logout()}>
+                Logout
+              </Button>
+            </div>
+          ) : (
+            <Button variant="success" onClick={() => this.login()}>
+              Login with Google
+            </Button>
+          )}
+        </Card.Body>
+        <div>
+          {this.state.foundStudent ? (
+            <div>
+              <p>
+                Found student: {this.state.foundStudent.id},{" "}
+                {this.state.foundStudent.title}
+                {this.state.foundStudent.fname}{" "}
+                {this.state.foundStudent.lname},{" "}
+                {this.state.foundStudent.email},{" "}
+                {this.state.foundStudent.phone},
+              </p>
+            </div>
+          ) : (
+            <p>No student found with that email</p>
+          )}
+        </div>
         <Card.Body>
           <Button onClick={() => this.readData()}>Read Data</Button>
           <Button onClick={() => this.autoRead()}>Auto Read</Button>
