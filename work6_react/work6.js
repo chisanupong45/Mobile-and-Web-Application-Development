@@ -158,7 +158,6 @@ class App extends React.Component {
       .signInWithPopup(provider)
       .then((result) => {
         this.setState({ user: result.user });
-        // Store user in local storage
         localStorage.setItem("user", JSON.stringify(result.user));
       })
       .catch((error) => {
@@ -172,7 +171,6 @@ class App extends React.Component {
       .signOut()
       .then(() => {
         this.setState({ user: null });
-        // Remove user from local storage
         localStorage.removeItem("user");
       })
       .catch((error) => {
@@ -184,7 +182,6 @@ class App extends React.Component {
     this.checkUser();
   }
 
-  // Call this function in the constructor or componentDidMount to check if user is already logged in
   checkUser() {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
@@ -219,7 +216,6 @@ class App extends React.Component {
   }
 
   render() {
-    // var stext = JSON.stringify(this.state.students);
     return (
       <Card>
         <Card.Header>{this.title}</Card.Header>
@@ -247,7 +243,7 @@ class App extends React.Component {
                 {this.state.foundStudent.fname}{" "}
                 {this.state.foundStudent.lname},{" "}
                 {this.state.foundStudent.email},{" "}
-                {this.state.foundStudent.phone},
+                {this.state.foundStudent.phone}
               </p>
             </div>
           ) : (
